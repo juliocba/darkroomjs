@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>darkroom.ocr.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="darkroom.html">
+                darkroom.js
+              </a>
+            
+              
+              <a class="source" href="darkroom.brightness.html">
+                darkroom.brightness.js
+              </a>
+            
+              
+              <a class="source" href="darkroom.crop.html">
+                darkroom.crop.js
+              </a>
+            
+              
+              <a class="source" href="darkroom.dragndrop.html">
+                darkroom.dragndrop.js
+              </a>
+            
+              
+              <a class="source" href="darkroom.history.html">
+                darkroom.history.js
+              </a>
+            
+              
+              <a class="source" href="darkroom.ocr.html">
+                darkroom.ocr.js
+              </a>
+            
+              
+              <a class="source" href="darkroom.reset.html">
+                darkroom.reset.js
+              </a>
+            
+              
+              <a class="source" href="darkroom.rotate.html">
+                darkroom.rotate.js
+              </a>
+            
+              
+              <a class="source" href="darkroom.save.html">
+                darkroom.save.js
+              </a>
+            
+              
+              <a class="source" href="darkroom.thumbnail.html">
+                darkroom.thumbnail.js
+              </a>
+            
+              
+              <a class="source" href="darkroom.watermark.html">
+                darkroom.watermark.js
+              </a>
+            
+              
+              <a class="source" href="darkroom.zoom.html">
+                darkroom.zoom.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>darkroom.ocr.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>;(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">Darkroom, fabric, document</span>) </span>{
+
+
+  <span class="hljs-keyword">var</span> ALL_LANGUAGES = [
+    {<span class="hljs-string">'jpn'</span>: <span class="hljs-string">'Japanese'</span>},
+    {<span class="hljs-string">'eng'</span>: <span class="hljs-string">'English'</span>},
+    {<span class="hljs-string">'chi_sim'</span>: <span class="hljs-string">'Chinese'</span>}
+  ]; <span class="hljs-comment">//more available, see https://github.com/naptha/tessdata/tree/gh-pages/3.02</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getImplementation</span>(<span class="hljs-params">_this</span>) </span>{
+
+    <span class="hljs-keyword">var</span> state = <span class="hljs-literal">null</span>;
+
+    <span class="hljs-keyword">var</span> helpers = {
+
+      <span class="hljs-attr">initializeOcr</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+
+        <span class="hljs-keyword">var</span> options = _this.options;
+      }
+    };
+
+    <span class="hljs-keyword">var</span> eventListeners = {
+
+      <span class="hljs-attr">accept</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+
+        <span class="hljs-keyword">var</span> ocr = _this.ocr,
+          darkroom  = _this.darkroom,
+          canvas    = _this.darkroom.canvas,
+          image     = _this.darkroom.image;
+
+        Darkroom.util.makeStatic(ocr);
+
+        fabric.Image.fromURL(canvas.toDataURL(), <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newImage</span>) </span>{
+
+          ocr.remove();
+          canvas.add(newImage);
+          image.remove();
+
+          darkroom.image = newImage;
+
+          Darkroom.util.makeStatic(newImage);
+
+          darkroom.dispatchEvent(<span class="hljs-string">'image:change'</span>);
+          states.notActive();
+        });
+
+      },
+
+      <span class="hljs-attr">reject</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{ eventListeners.deActivate(); },
+
+      <span class="hljs-attr">activate</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{ states.active(); },
+
+      <span class="hljs-attr">deActivate</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+
+        states.notActive();
+      }
+    };
+
+    <span class="hljs-keyword">var</span> states = {
+
+      <span class="hljs-attr">notActive</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+
+        <span class="hljs-keyword">var</span> buttons = _this.buttons,
+          inputs  = _this.inputs;
+
+        _this.ocr = <span class="hljs-literal">null</span>;
+
+        buttons.ocr.active(<span class="hljs-literal">false</span>);
+
+        buttons.accept.hide(<span class="hljs-literal">true</span>);
+        buttons.reject.hide(<span class="hljs-literal">true</span>);
+
+        Darkroom.util.forEachValue(inputs, Darkroom.util.hideElement);
+
+        buttons.ocr.element.removeEventListener(<span class="hljs-string">'click'</span>, eventListeners.deActivate);
+        buttons.ocr.addEventListener(<span class="hljs-string">'click'</span>, eventListeners.activate);
+      },
+
+      <span class="hljs-attr">active</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+
+        <span class="hljs-keyword">var</span> buttons = _this.buttons,
+          options = _this.options,
+          canvas  = _this.darkroom.canvas,
+          inputs  = _this.inputs;
+
+        buttons.ocr.active(<span class="hljs-literal">true</span>);
+
+        buttons.accept.hide(<span class="hljs-literal">false</span>);
+        buttons.reject.hide(<span class="hljs-literal">false</span>);
+
+        helpers.initializeOcr();
+
+        Darkroom.util.forEachValue(inputs, Darkroom.util.showElement);
+
+        inputs.language.value    = options.language;
+
+        buttons.ocr.element.removeEventListener(<span class="hljs-string">'click'</span>, eventListeners.activate);
+        buttons.ocr.addEventListener(<span class="hljs-string">'click'</span>, eventListeners.deActivate);
+      }
+    };
+
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">eventListeners</span>: eventListeners,
+      <span class="hljs-attr">states</span>:         states
+    };
+  }
+
+  Darkroom.plugins[<span class="hljs-string">'ocr'</span>] = Darkroom.Plugin.extend({
+    <span class="hljs-attr">defaults</span>: {
+      <span class="hljs-attr">language</span>: <span class="hljs-string">'jpn'</span>,
+      <span class="hljs-attr">callback</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{}
+    },
+    <span class="hljs-attr">initialize</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+
+      <span class="hljs-keyword">var</span> buttonGroup = <span class="hljs-keyword">this</span>.darkroom.toolbar.createButtonGroup(),
+        options     = <span class="hljs-keyword">this</span>.options;
+
+      <span class="hljs-keyword">var</span> buttons = <span class="hljs-keyword">this</span>.buttons = {},
+        inputs  = <span class="hljs-keyword">this</span>.inputs  = {};
+
+      buttons.ocr = buttonGroup.createButton({<span class="hljs-attr">image</span>: <span class="hljs-string">'ocr'</span>});
+      buttons.accept    = buttonGroup.createButton({<span class="hljs-attr">image</span>: <span class="hljs-string">'accept'</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">'success'</span>, <span class="hljs-attr">hide</span>:  <span class="hljs-literal">true</span>});
+      buttons.reject    = buttonGroup.createButton({<span class="hljs-attr">image</span>: <span class="hljs-string">'cancel'</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">'danger'</span>, <span class="hljs-attr">hide</span>: <span class="hljs-literal">true</span>});
+
+      inputs.language = Darkroom.util.createElement(<span class="hljs-string">'select'</span>, {<span class="hljs-attr">title</span>: <span class="hljs-string">'Language'</span>});
+
+      ALL_LANGUAGES.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">language</span>) </span>{
+
+        <span class="hljs-keyword">var</span> key = <span class="hljs-built_in">Object</span>.keys(language)[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">var</span> optionElement = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'option'</span>);
+        optionElement.innerHTML = language[key];
+        optionElement.setAttribute(<span class="hljs-string">'value'</span>, key);
+        inputs.language.appendChild(optionElement);
+      });
+
+      <span class="hljs-keyword">var</span> implementation = getImplementation(<span class="hljs-keyword">this</span>);
+
+      buttons.accept.addEventListener(<span class="hljs-string">'click'</span>, options.callback.bind(<span class="hljs-string">''</span>, inputs.language));
+      buttons.reject.addEventListener(<span class="hljs-string">'click'</span>, implementation.eventListeners.reject);
+
+      buttonGroup.element.appendChild(inputs.language);
+
+      implementation.states.notActive();
+    }
+  });
+})(Darkroom, fabric, <span class="hljs-built_in">document</span>);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
