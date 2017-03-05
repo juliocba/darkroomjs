@@ -7,76 +7,80 @@
   <link rel="stylesheet" href="./demo/css/page.css">
 </head>
 <body>
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-23657373-2', 'mattketmo.github.io');
-    ga('send', 'pageview');
-  </script>
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-23657373-2', 'mattketmo.github.io');
+  ga('send', 'pageview');
+</script>
 
-  <header id="header">
-    <a href="https://github.com/MattKetmo/darkroomjs">
-      <img style="position: absolute; top: 0; right: 0; border: 0;"
-        src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"
-        alt="Fork on GitHub">
-    </a>
+<header id="header">
+  <a href="https://github.com/MattKetmo/darkroomjs">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+         src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"
+         alt="Fork on GitHub">
+  </a>
 
-    <div class="container">
-      <h1>Darkroom<strong>JS</strong></h1>
+  <div class="container">
+    <h1>Darkroom<strong>JS</strong></h1>
       <p class="hero">
         Extensible image editing tool powered by HTML5 canvas.
       </p>
-    </div>
-  </header>
+  </div>
+</header>
 
-  <div id="content">
-    <div class="container">
-      <section class="copy">
-        <h2 class="sr-only">Introduction</h2>
+<div id="content">
+  <div class="container">
+    <section class="copy">
+      <h2 class="sr-only">Introduction</h2>
 
-        <p class="intro">
-          <strong>DarkroomJS</strong> is a JavaScript library which provides basic
-          image editing tools in your browser, such as <strong>rotation</strong> or <strong>cropping</strong>.
-          It is based on the awesome <a href="http://fabricjs.com/">FabricJS</a> library
-          to handle images in HTML5 canvas.
-        </p>
+      <p class="intro">
+        <strong>DarkroomJS</strong> is a JavaScript library which provides basic
+        image editing tools in your browser, such as <strong>rotation</strong> or <strong>cropping</strong>.
+        It is based on the awesome <a href="http://fabricjs.com/">FabricJS</a> library
+        to handle images in HTML5 canvas.
+      </p>
 
-        <figure class="image-container target">
-          <!-- You may add attribute crossOrigin="anonymous" for CORS -->
-          <img src="./demo/images/domokun.jpg" alt="DomoKun" id="target">
+      <p id="result">
+        result:
+      </p>
 
-          <figcaption class="image-meta">
-            <a target="_blank" href="http://www.flickr.com/photos/bentorode/5176910387/">
-              ©
-              <strong class="image-meta-title">DomoKun</strong>
-              by
-              <em class="image-meta-author">Ben Torode</em>
-            </a>
-          </figcaption>
-        </figure>
+      <figure class="image-container target">
+        <!-- You may add attribute crossOrigin="anonymous" for CORS -->
+        <img src="./demo/images/domokun.jpg" alt="DomoKun" id="target">
 
-        <h2>Why?</h2>
+        <figcaption class="image-meta">
+          <a target="_blank" href="http://www.flickr.com/photos/bentorode/5176910387/">
+            ©
+            <strong class="image-meta-title">DomoKun</strong>
+            by
+            <em class="image-meta-author">Ben Torode</em>
+          </a>
+        </figcaption>
+      </figure>
 
-        <p>
-          It's easy to get a <a href="http://www.hotscripts.com/blog/javascript-image-cropping-scripts/">
-          javascript script</a> to crop an image in a web page. But if your want
-          more features like rotation or brightness adjustment, then you will have to do all of this yourself.
-          No more jQuery plugins here. DarkroomJS allows you to make whatever you want with your images by
-          using the power of the HTML5 canvas.
-        </p>
+      <h2>Why?</h2>
 
-        <h2>The concept</h2>
+      <p>
+        It's easy to get a <a href="http://www.hotscripts.com/blog/javascript-image-cropping-scripts/">
+        javascript script</a> to crop an image in a web page. But if your want
+        more features like rotation or brightness adjustment, then you will have to do all of this yourself.
+        No more jQuery plugins here. DarkroomJS allows you to make whatever you want with your images by
+        using the power of the HTML5 canvas.
+      </p>
 
-        <p>
-          The library is designed to be easily extendable.
-          The core script only transforms the target image to a canvas with a
-          FabricJS instance, and creates an empty toolbar.
-          All the features are then implemented in separate plugins.
-        </p>
+      <h2>The concept</h2>
 
-        <figure>
+      <p>
+        The library is designed to be easily extendable.
+        The core script only transforms the target image to a canvas with a
+        FabricJS instance, and creates an empty toolbar.
+        All the features are then implemented in separate plugins.
+      </p>
+
+      <figure>
         <pre><code>.
 ├── darkroom.js
 └── plugins
@@ -84,89 +88,91 @@
     ├── darkroom.history.js
     ├── darkroom.rotate.js
     └── darkroom.save.js</code></pre>
-        </figure>
+      </figure>
 
-        <p>
-          Each plugin is responsible for creating its own functionality.
-          Buttons can easily be added to the toolbar and binded with those features.
-        </p>
+      <p>
+        Each plugin is responsible for creating its own functionality.
+        Buttons can easily be added to the toolbar and binded with those features.
+      </p>
 
-        <h2>Features</h2>
+      <h2>Features</h2>
 
-        <p>
-          Currently, the implemented features are:
-        </p>
+      <p>
+        Currently, the implemented features are:
+      </p>
 
-        <dl>
-          <dt>Crop</dt>
-          <dd>
-            Crops the image by selecting a zone with your mouse.
-            This supports several options like ratio and dimensions control (min/max).
-          </dd>
+      <dl>
+        <dt>Crop</dt>
+        <dd>
+          Crops the image by selecting a zone with your mouse.
+          This supports several options like ratio and dimensions control (min/max).
+        </dd>
 
-          <dt>Rotation</dt>
-          <dd>
-            Adds two buttons to let you rotate hte image to the left or the right.
-          </dd>
+        <dt>Rotation</dt>
+        <dd>
+          Adds two buttons to let you rotate hte image to the left or the right.
+        </dd>
 
-          <dt>History</dt>
-          <dd>
-            Allows to undo and redo any changes on the main image.
-          </dd>
+        <dt>History</dt>
+        <dd>
+          Allows to undo and redo any changes on the main image.
+        </dd>
 
-          <dt>Save</dt>
-          <dd>
-            Transform back the canvas into image.
-            This is mainly a proof of concept to show how plugins work.
-            This one only makes <a href="https://github.com/MattKetmo/darkroomjs/blob/master/lib/js/plugins/darkroom.save.js">a few lines</a>.
-          </dd>
-        </dl>
+        <dt>Save</dt>
+        <dd>
+          Transform back the canvas into image.
+          This is mainly a proof of concept to show how plugins work.
+          This one only makes <a href="https://github.com/MattKetmo/darkroomjs/blob/master/lib/js/plugins/darkroom.save.js">a few lines</a>.
+        </dd>
+      </dl>
 
-        <!--
-        <h2>Interactive example</h2>
-        <p></p>
-        -->
+      <!--
+      <h2>Interactive example</h2>
+      <p></p>
+      -->
 
-        <h2>Contributing</h2>
+      <h2>Contributing</h2>
 
-        <p>
-          The project is under MIT license.
-          Feel free to fork the project on <a href="https://github.com/MattKetmo/darkroomjs">GitHub</a>
-          or report issues. All ideas are also welcome.
-        </p>
+      <p>
+        The project is under MIT license.
+        Feel free to fork the project on <a href="https://github.com/MattKetmo/darkroomjs">GitHub</a>
+        or report issues. All ideas are also welcome.
+      </p>
 
-      </section>
-    </div>
+    </section>
   </div>
+</div>
 
-  <script src="./vendor/fabric.js"></script>
-  <script src="./vendor/fontdetect.js"></script>
-  <script src="./vendor/jscolor/jscolor.js"></script>
-  <script src="./build/js/darkroom.min.js"></script>
+<script src="./vendor/fabric.js"></script>
+<script src="./vendor/fontdetect.js"></script>
+<script src="./vendor/jscolor/jscolor.js"></script>
+<script src="./build/js/darkroom.min.js"></script>
+<script src='https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
 
-  <script>
-    var dkrm = new Darkroom('#target', {
-      // Size options
-      minWidth: 100,
-      minHeight: 100,
-      maxWidth: 1280,
-      maxHeight: 720,
+<script>
+  var dkrm = new Darkroom('#target', {
+    // Size options
+    minWidth: 100,
+    minHeight: 100,
+    maxWidth: 9999,
+    maxHeight: 9999,
 
-      plugins: {
-        //save: false,
-        crop: {
-          quickCropKey: 67, //key "c"
-          //minHeight: 50,
-          //minWidth: 50,
-          //ratio: 1
+    plugins: {
+      save: false,
+      watermark: false,
+      ocr: {
+        callback: function(language, event) {
+          var canvas = document.querySelector('.lower-canvas');
+          var ctx = canvas.getContext('2d');
+          Tesseract
+            .recognize(ctx, {lang: language.value})
+            .then(function(result) {
+              document.getElementById('result').textContent = 'result:' + result.text;
+            });
         }
-      },
-      init: function() {
-        // var cropPlugin = this.getPlugin('crop');
-        // cropPlugin.selectZone(170, 25, 300, 300);
-        //cropPlugin.requireFocus();
       }
-    });
-  </script>
+    }
+  });
+</script>
 </body>
 </html>
