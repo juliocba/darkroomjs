@@ -8,7 +8,7 @@ git checkout -b gh-pages master
 grunt build
 grunt docs
 git add -f build docs
-git commit -m "Build GH pages"
+git commit -m ":octocat: Build GH pages"
 
 # Push & reset
 git push -f origin gh-pages
